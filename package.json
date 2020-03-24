@@ -1,0 +1,19 @@
+{
+  "name": "tetris-node",
+  "version": "1.0.0",
+  "description": "Tetris Clone made using Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamedwaiz96/tetris-node.git"
+  },
+  "author": "Hamed Waiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hamedwaiz96/tetris-node/issues"
+  },
+  "homepage": "https://github.com/hamedwaiz96/tetris-node#readme"
+}
