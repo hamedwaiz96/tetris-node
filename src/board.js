@@ -1,11 +1,19 @@
+const Queue = require('./queue');
+
 const PIECES = {
-    
+    1: [[], [], [], []],
+    2: [[], [], [], []],
+    3: [[], [], [], []],
+    4: [[], [], [], []],
+    5: [[], [], [], []],
+    6: [[], [], [], []],
+    7: [[], [], [], []]
 }
 
 class Board {
     constructor() {
-        this.queue = this.createQueue();
-
+        this.board = 
+        this.boardQueue = this.createQueue();
     }
 
     randomPiece() {
@@ -13,10 +21,12 @@ class Board {
     }
 
     createQueue() {
-        const queue = [];
+        const queue = new Queue();
         for (let i = 0; i <= 3; i++){
-            queue.push(this.randomPiece())
+            queue.enqueue(PIECES[this.randomPiece()])
         }
         return queue;
     }
 }
+
+module.exports = Board;
