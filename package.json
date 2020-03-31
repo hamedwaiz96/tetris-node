@@ -1,10 +1,12 @@
 {
   "name": "tetris-node",
   "version": "1.0.0",
+  "private": true,
   "description": "Tetris Clone made using Node",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack --watch --mode=development",
+    "start": "node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,13 @@
   },
   "homepage": "https://github.com/hamedwaiz96/tetris-node#readme",
   "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-loader": "^8.1.0",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^2.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   }
 }
