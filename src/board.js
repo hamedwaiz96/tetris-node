@@ -10,7 +10,7 @@ const PIECES = {
     "LZ": [[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
 }
 
-const PIECES_CONNECTIONS = {
+const PIECES_MAP = {
     1: "Line",
     2: "Square",
     3: "T",
@@ -24,7 +24,9 @@ class Board {
     constructor() {
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentX = 3;
+        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
+        this.nextPiece = this.boardQueue.top();
+        this.currentX = 4;
         this.currentY = 0;
     }
 
@@ -35,9 +37,26 @@ class Board {
     moveRight() {
         
     }
+
+    moveDown() {
+        
+    }
+
+    placePiece() {
+
+    }
     
     checkNextMove(move) {
-
+        var nextX = (this.currentX + move[0]);
+        var nextY = (this.currentY + move[1]);
+        for (let i = 0; i <= this.currentPiece.length - 1; i++) {
+            for (let j = 0; j <= this.currentPiece[i].length - 1; j++) {
+                if (this.currentPiece[i][j] == 1 && this.board[nextX + i][nextY + j] == 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     randomPiece() {
@@ -47,19 +66,23 @@ class Board {
     createQueue() {
         const queue = new Queue();
         for (let i = 0; i <= 3; i++){
-            queue.enqueue(PIECES[PIECES_CONNECTIONS[this.randomPiece()]])
+            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]])
         }
         return queue;
     }
 
     createBoard() {
-        const BOARD = new Array(20)
+        const BOARD = new Array(21)
         for (let i = 0; i <= BOARD.length - 1; i++) {
-            BOARD[i] = new Array(10);
+            BOARD[i] = new Array(12);
         }
         for (let j = 0; j <= BOARD.length - 1; j++) {
             for (let k = 0; k <= BOARD[0].length - 1; k++) {
-                BOARD[j][k] = 0;
+                if (j == 20 || (k == 0 || k == 11)) {
+                    BOARD[j][k] = 1;
+                } else {
+                    BOARD[j][k] = 0;
+                }
             }
         }
         return BOARD;
