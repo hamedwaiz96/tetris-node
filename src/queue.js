@@ -27,8 +27,8 @@ class Queue {
 
     printQueue() { 
         var str = ""; 
-        for(var i = 0; i < this.items.length; i++) 
-            str += this.items[i] +" "; 
+        for(var i = 0; i < this.queue.length; i++) 
+            str += this.queue[i] +" "; 
         return str; 
     } 
 }

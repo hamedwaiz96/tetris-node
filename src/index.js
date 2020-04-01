@@ -1,11 +1,6 @@
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const port = 3000;
+const Board = require('./board');
 
-app.use(bodyParser.json())
+var board = new Board();
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')))
-
-app.listen(port, () => console.log('Server Started!'))
+console.log(board.randomPiece());
+console.log(board.boardQueue.printQueue());
