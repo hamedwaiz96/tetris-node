@@ -161,7 +161,7 @@ var Board = /*#__PURE__*/function () {
 
     this.board = this.createBoard();
     this.boardQueue = this.createQueue();
-    this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
+    this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]][0];
     this.nextPiece = this.boardQueue.top();
     this.currentX = 7;
     this.currentY = 0;
@@ -212,7 +212,7 @@ var Board = /*#__PURE__*/function () {
       this.currentRotation = 0;
       this.currentPiece = this.nextPiece;
       this.boardQueue.dequeue();
-      this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]]);
+      this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][this.currentRotation]);
       this.nextPiece = this.boardQueue.top();
     }
   }, {
@@ -248,7 +248,7 @@ var Board = /*#__PURE__*/function () {
       var queue = new Queue();
 
       for (var i = 0; i <= 3; i++) {
-        queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]]);
+        queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][0]);
       }
 
       return queue;
@@ -298,6 +298,9 @@ var Board = __webpack_require__(/*! ./board */ "./src/board.js");
 var board = new Board();
 console.log(board.randomPiece());
 console.log(board.boardQueue.printQueue());
+console.log(board.currentPiece);
+board.resetToNextPiece();
+console.log(board.currentPiece);
 
 /***/ }),
 
@@ -328,7 +331,7 @@ var Queue = /*#__PURE__*/function () {
     }
   }, {
     key: "dequeue",
-    value: function dequeue(item) {
+    value: function dequeue() {
       if (this.isEmpty()) {
         return false;
       }
@@ -342,7 +345,7 @@ var Queue = /*#__PURE__*/function () {
         return false;
       }
 
-      this.queue[0];
+      return this.queue[0];
     }
   }, {
     key: "isEmpty",

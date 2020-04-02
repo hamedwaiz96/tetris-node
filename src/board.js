@@ -199,7 +199,7 @@ class Board {
     constructor() {
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
+        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]][0];
         this.nextPiece = this.boardQueue.top();
         this.currentX = 7;
         this.currentY = 0;
@@ -245,7 +245,7 @@ class Board {
         this.currentRotation = 0;
         this.currentPiece = this.nextPiece;
         this.boardQueue.dequeue();
-        this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]]);
+        this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][this.currentRotation]);
         this.nextPiece = this.boardQueue.top();
     }
     
@@ -273,7 +273,7 @@ class Board {
     createQueue() {
         const queue = new Queue();
         for (let i = 0; i <= 3; i++){
-            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]])
+            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][0])
         }
         return queue;
     }

@@ -7,7 +7,7 @@ class Queue {
         this.queue.push(item)
     }
 
-    dequeue(item) {
+    dequeue() {
         if(this.isEmpty()) {
             return false;
         }
@@ -18,7 +18,7 @@ class Queue {
         if(this.isEmpty()) {
             return false;
         }
-        this.queue[0];
+        return this.queue[0];
     }
 
     isEmpty() {
