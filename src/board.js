@@ -236,7 +236,6 @@ class Board {
                 this.board[this.currentX + i][this.currentY + j] = currentPiece[i][j]
             }
         }
-        resetToNextPiece();
     }
 
     resetToNextPiece() {
