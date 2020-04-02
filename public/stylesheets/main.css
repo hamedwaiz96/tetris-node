@@ -1,3 +1,7 @@
 .tetris-board {
     box-sizing: border-box;
 }
+
+.tetris-row {
+    display: flex;
+}

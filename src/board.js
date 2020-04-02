@@ -197,25 +197,47 @@ const PIECES_MAP = {
 
 class Board {
     constructor() {
+        const self = this;
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]][0];
+        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
         this.nextPiece = this.boardQueue.top();
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
+        this.currentLevel = 1;
+        this.currentSpeed = 1000;
+        this.placeCurrentPiece();
+        this.populateBoard();
+        // window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
     moveLeft() {
-
+        this.removeCurrentPiece();
+        if (this.checkNextMove([-1, 0])) {
+            this.currentX -= 1;
+        }
+        this.placeCurrentPiece();
     }
 
     moveRight() {
-        
+        this.removeCurrentPiece();
+        if (this.checkNextMove([1, 0])) {
+            this.currentX += 1;
+        }
+        this.placeCurrentPiece();
     }
 
     moveDown() {
-
+        this.removeCurrentPiece();
+        if (this.checkNextMove([0, 1])) {
+            this.currentY += 1;
+            this.placeCurrentPiece();
+        } else {
+            this.placeCurrentPiece();
+            this.resetToNextPiece();
+        }
+        console.log('hello')
     }
 
     rotatePiece() {
@@ -223,9 +245,12 @@ class Board {
         if (nextRotation == 4) {
             nextRotation = 0;
         }
-        if (checkNextMove([0, 0], this.currentPiece[nextRotation])) {
+        this.removeCurrentPiece();
+        if (this.checkNextMove([0, 0], this.currentPiece[nextRotation])) {
             this.currentRotation = nextRotation;
-            placeCurrentPiece()
+            this.placeCurrentPiece();
+        } else {
+            this.placeCurrentPiece();
         }
     }
 
@@ -233,7 +258,18 @@ class Board {
         var currentPiece = this.currentPiece[this.currentRotation]
         for (let i = 0; i <= currentPiece.length - 1; i++) {
             for (let j = 0; j <= currentPiece[i].length - 1; j++) {
-                this.board[this.currentX + i][this.currentY + j] = currentPiece[i][j]
+                this.board[this.currentY + i][this.currentX + j] = currentPiece[i][j]
+            }
+        }
+    }
+
+    removeCurrentPiece() {
+        var currentPiece = this.currentPiece[this.currentRotation]
+        for (let i = 0; i <= currentPiece.length - 1; i++) {
+            for (let j = 0; j <= currentPiece[i].length - 1; j++) {
+                if (currentPiece[i][j] == 1) {
+                    this.board[this.currentY + i][this.currentX + j] = 0;
+                }
             }
         }
     }
@@ -246,6 +282,7 @@ class Board {
         this.boardQueue.dequeue();
         this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][this.currentRotation]);
         this.nextPiece = this.boardQueue.top();
+        this.placeCurrentPiece();
     }
     
     checkNextMove(move, piece=this.currentPiece[this.currentRotation]) {
@@ -257,7 +294,7 @@ class Board {
         var nextY = (this.currentY + move[1]);
         for (let i = 0; i <= piece.length - 1; i++) {
             for (let j = 0; j <= piece[i].length - 1; j++) {
-                if (this.piece[i][j] == 1 && this.board[nextX + i][nextY + j] == 1) {
+                if (piece[i][j] == 1 && this.board[nextY + i][nextX + j] == 1) {
                     return false;
                 }
             }
@@ -295,6 +332,26 @@ class Board {
             }
         }
         return BOARD;
+    }
+
+    nextLevel() {
+        clearInterval();
+        this.currentLevel += 1
+        this.currentSpeed = ((0.8 - ((this.currentLevel - 1) * 0.007))**(this.currentLevel - 1)) * 1000
+        window.setInterval(this.moveDown, this.currentSpeed);
+    }
+
+    populateBoard() {
+        var cols = document.getElementsByClassName('tetris-col-p');
+        for (let i = 0; i <= this.board.length - 1; i++) {
+            for (let j = 0; j <= this.board[i].length - 1; j++){
+                if (i >= 20 || (j <= 3 || j >= 14)) {
+                    continue;
+                } else {
+                    cols[(j - 4) * i + i].innerHTML = this.board[i][j]
+                }
+            }
+        }
     }
 }
 
