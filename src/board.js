@@ -1,4 +1,5 @@
 const Queue = require('./queue');
+const _ = require('lodash');
 
 const PIECES = {
     "Line": {
@@ -208,8 +209,7 @@ class Board {
         this.currentLevel = 1;
         this.currentSpeed = 1000;
         this.placeCurrentPiece();
-        this.populateBoard();
-        // window.setInterval(this.moveDown.bind(self), this.currentSpeed);
+        this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
     moveLeft() {
@@ -237,7 +237,6 @@ class Board {
             this.placeCurrentPiece();
             this.resetToNextPiece();
         }
-        console.log('hello')
     }
 
     rotatePiece() {
@@ -258,9 +257,12 @@ class Board {
         var currentPiece = this.currentPiece[this.currentRotation]
         for (let i = 0; i <= currentPiece.length - 1; i++) {
             for (let j = 0; j <= currentPiece[i].length - 1; j++) {
-                this.board[this.currentY + i][this.currentX + j] = currentPiece[i][j]
+                if (currentPiece[i][j] == 1){
+                    this.board[this.currentY + i][this.currentX + j] = currentPiece[i][j]
+                }
             }
         }
+        this.populateBoard();
     }
 
     removeCurrentPiece() {
@@ -272,6 +274,7 @@ class Board {
                 }
             }
         }
+        this.populateBoard();
     }
 
     resetToNextPiece() {
@@ -280,9 +283,10 @@ class Board {
         this.currentRotation = 0;
         this.currentPiece = this.nextPiece;
         this.boardQueue.dequeue();
-        this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][this.currentRotation]);
+        this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]]);
         this.nextPiece = this.boardQueue.top();
         this.placeCurrentPiece();
+        this.populateBoard();
     }
     
     checkNextMove(move, piece=this.currentPiece[this.currentRotation]) {
@@ -309,7 +313,7 @@ class Board {
     createQueue() {
         const queue = new Queue();
         for (let i = 0; i <= 3; i++){
-            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]][0])
+            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]])
         }
         return queue;
     }
@@ -335,20 +339,21 @@ class Board {
     }
 
     nextLevel() {
-        clearInterval();
+        const self = this;
+        clearInterval(self.interval);
         this.currentLevel += 1
         this.currentSpeed = ((0.8 - ((this.currentLevel - 1) * 0.007))**(this.currentLevel - 1)) * 1000
-        window.setInterval(this.moveDown, this.currentSpeed);
+        window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
-    populateBoard() {
+    populateBoard(board=this.board) {
         var cols = document.getElementsByClassName('tetris-col-p');
-        for (let i = 0; i <= this.board.length - 1; i++) {
-            for (let j = 0; j <= this.board[i].length - 1; j++){
+        for (let i = 0; i <= board.length - 1; i++) {
+            for (let j = 0; j <= board[i].length - 1; j++){
                 if (i >= 20 || (j <= 3 || j >= 14)) {
                     continue;
                 } else {
-                    cols[(j - 4) * i + i].innerHTML = this.board[i][j]
+                    cols[i*10 + (j-4)].innerHTML = board[i][j]
                 }
             }
         }

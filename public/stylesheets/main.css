@@ -5,3 +5,7 @@
 .tetris-row {
     display: flex;
 }
+
+.tetris-col {
+    display: flex;
+}
