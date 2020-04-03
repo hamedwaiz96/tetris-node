@@ -196,14 +196,26 @@ const PIECES_MAP = {
     7: "LZ"
 }
 
+const COLOR_MAP = {
+    1: "#30D1F1",
+    2: "#F1D70A",
+    3: "#AF00E9",
+    4: "#F38F0E",
+    5: "#1459E9",
+    6: "#E9000A",
+    7: "#3DFF2D"
+}
+
 class Board {
     constructor() {
         const self = this;
         this.fails = 0;
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
-        this.nextPiece = this.boardQueue.top();
+        this.currentPieceNumber = this.randomPiece();
+        this.currentPiece = PIECES[PIECES_MAP[this.currentPieceNumber]];
+        this.nextPiece = this.boardQueue.top()[0]
+        this.nextPieceNumber = this.boardQueue.top()[1];
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
@@ -264,7 +276,7 @@ class Board {
         for (let i = 0; i <= currentPiece.length - 1; i++) {
             for (let j = 0; j <= currentPiece[i].length - 1; j++) {
                 if (currentPiece[i][j] == 1){
-                    this.board[this.currentY + i][this.currentX + j] = currentPiece[i][j]
+                    this.board[this.currentY + i][this.currentX + j] = [currentPiece[i][j], COLOR_MAP[this.currentPieceNumber]]
                 }
             }
         }
@@ -276,7 +288,7 @@ class Board {
         for (let i = 0; i <= currentPiece.length - 1; i++) {
             for (let j = 0; j <= currentPiece[i].length - 1; j++) {
                 if (currentPiece[i][j] == 1) {
-                    this.board[this.currentY + i][this.currentX + j] = 0;
+                    this.board[this.currentY + i][this.currentX + j] = [0, "White"];
                 }
             }
         }
@@ -293,9 +305,12 @@ class Board {
         this.currentY = 0;
         this.currentRotation = 0;
         this.currentPiece = this.nextPiece;
+        this.currentPieceNumber = this.nextPieceNumber;
         this.boardQueue.dequeue();
-        this.boardQueue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]]);
-        this.nextPiece = this.boardQueue.top();
+        var lastPieceNumber = this.randomPiece();
+        this.boardQueue.enqueue([PIECES[PIECES_MAP[lastPieceNumber]], lastPieceNumber]);
+        this.nextPiece = this.boardQueue.top()[0];
+        this.nextPieceNumber = this.boardQueue.top()[1];
         this.placeCurrentPiece();
         this.populateBoard();
     }
@@ -309,7 +324,7 @@ class Board {
         var nextY = (this.currentY + move[1]);
         for (let i = 0; i <= piece.length - 1; i++) {
             for (let j = 0; j <= piece[i].length - 1; j++) {
-                if (piece[i][j] == 1 && this.board[nextY + i][nextX + j] == 1) {
+                if (piece[i][j] == 1 && this.board[nextY + i][nextX + j][0] == 1) {
                     return false;
                 }
             }
@@ -324,7 +339,8 @@ class Board {
     createQueue() {
         const queue = new Queue();
         for (let i = 0; i <= 3; i++){
-            queue.enqueue(PIECES[PIECES_MAP[this.randomPiece()]])
+            var pieceNumber = this.randomPiece();
+            queue.enqueue([PIECES[PIECES_MAP[pieceNumber]], pieceNumber])
         }
         return queue;
     }
@@ -340,9 +356,9 @@ class Board {
         for (let j = 0; j <= BOARD.length - 1; j++) {
             for (let k = 0; k <= BOARD[0].length - 1; k++) {
                 if (j >= 20 || (k <= 3 || k >= 14)) {
-                    BOARD[j][k] = 1;
+                    BOARD[j][k] = [1, "White"];
                 } else {
-                    BOARD[j][k] = 0;
+                    BOARD[j][k] = [0, "White"];
                 }
             }
         }
@@ -364,7 +380,8 @@ class Board {
                 if (i >= 20 || (j <= 3 || j >= 14)) {
                     continue;
                 } else {
-                    cols[i*10 + (j-4)].innerHTML = board[i][j]
+                    var currentIndex = (i*10) + (j-4)
+                    cols[currentIndex].style.backgroundColor = board[i][j][1];
                 }
             }
         }

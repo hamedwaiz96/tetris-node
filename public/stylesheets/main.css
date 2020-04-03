@@ -9,3 +9,15 @@
 .tetris-col {
     display: flex;
 }
+
+.tetris-col-p {
+    height: 27px;
+    width: 27px;
+    box-sizing: border-box;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.tetris-row:last-of-type > .tetris-col {
+    border-bottom: 1px solid black;
+}
