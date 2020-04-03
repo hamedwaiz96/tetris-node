@@ -423,13 +423,23 @@ class Board {
     }
 
     handleEvent(e) {
+        console.log(e.code)
         if (e.code == "ArrowRight") {
             this.moveRight();
         } else if (e.code == "ArrowLeft") {
             this.moveLeft();
         } else if (e.code == "ArrowUp") {
             this.rotatePiece();
+        } else if (e.code == "Space") {
+            this.hardDropPiece();
         }
+    }
+
+    hardDropPiece() {
+        this.removeCurrentPiece();
+        this.currentY = this.bottomY;
+        this.placeCurrentPiece();
+        this.resetToNextPiece();
     }
 
     gameOver() {
