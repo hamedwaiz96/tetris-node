@@ -319,7 +319,6 @@ class Board {
         this.topofPiece = this.findTopofPiece();
         this.bottomofPiece = this.findBottomofPiece();
         this.placeCurrentPiece();
-        this.populateBoard();
     }
     
     checkNextMove(move, piece=this.currentPiece[this.currentRotation]) {
@@ -399,6 +398,7 @@ class Board {
                 } else {
                     var currentIndex = (i*10) + (j-4)
                     cols[currentIndex].style.backgroundColor = board[i][j][1];
+                    cols[currentIndex].style.opacity = "1";
                 }
             }
         }
