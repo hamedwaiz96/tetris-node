@@ -286,7 +286,6 @@ class Board {
                 }
             }
         }
-        if (end == true) {this.clearLines()}
         this.populateBoard();
         this.drawGhostPiece();
     }
@@ -309,6 +308,7 @@ class Board {
         } else {
             this.fails = 0;
         }
+        this.clearLines()
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
