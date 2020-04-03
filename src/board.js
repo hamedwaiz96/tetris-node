@@ -221,6 +221,9 @@ class Board {
         this.currentRotation = 0;
         this.currentLevel = 1;
         this.currentSpeed = 1000;
+        this.bottomY = 18;
+        this.topofPiece = this.findTopofPiece();
+        this.bottomofPiece = this.findBottomofPiece();
         this.placeCurrentPiece();
         document.addEventListener("keydown", self.handleEvent.bind(self));
         this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
@@ -272,6 +275,7 @@ class Board {
     }
 
     placeCurrentPiece() {
+        this.bottomY = this.checkBottomMove();
         var currentPiece = this.currentPiece[this.currentRotation]
         for (let i = 0; i <= currentPiece.length - 1; i++) {
             for (let j = 0; j <= currentPiece[i].length - 1; j++) {
@@ -281,6 +285,7 @@ class Board {
             }
         }
         this.populateBoard();
+        this.drawGhostPiece();
     }
 
     removeCurrentPiece() {
@@ -311,6 +316,8 @@ class Board {
         this.boardQueue.enqueue([PIECES[PIECES_MAP[lastPieceNumber]], lastPieceNumber]);
         this.nextPiece = this.boardQueue.top()[0];
         this.nextPieceNumber = this.boardQueue.top()[1];
+        this.topofPiece = this.findTopofPiece();
+        this.bottomofPiece = this.findBottomofPiece();
         this.placeCurrentPiece();
         this.populateBoard();
     }
@@ -330,6 +337,16 @@ class Board {
             }
         }
         return true;
+    }
+
+    checkBottomMove() {
+        for (let i = 1; i <= 20; i++) {
+            if (this.checkNextMove([0, i])) {
+                continue
+            } else {
+                return (i-1)+this.currentY;
+            }
+        }
     }
 
     randomPiece() {
@@ -387,6 +404,24 @@ class Board {
         }
     }
 
+    drawGhostPiece() {
+        var cols = document.getElementsByClassName('tetris-col-p');
+        var piece = this.currentPiece[this.currentRotation];
+        for (let i = 0; i <= piece.length - 1; i++) {
+            for (let j = 0; j <= piece[i].length - 1; j++) {
+                if (piece[i][j] == 1) {
+                    var bottomIndex = (this.bottomY+i)*10 + (this.currentX+j - 4);
+                    cols[bottomIndex].style.backgroundColor = COLOR_MAP[this.currentPieceNumber];
+                    cols[bottomIndex].style.opacity = "0.6";
+                }
+            }
+        }
+    }
+
+    checkClears() {
+
+    }
+
     handleEvent(e) {
         if (e.code == "ArrowRight") {
             this.moveRight();
@@ -400,6 +435,27 @@ class Board {
     gameOver() {
         clearInterval(this.interval);
         alert("Game Over!");
+    }
+
+    findTopofPiece() {
+        var piece = this.currentPiece[this.currentRotation]
+        for (let i = 0; i <= piece.length - 1; i++) {
+            for (let j = 0; j <= piece[i].length - 1; j++) {
+                if (piece[i][j] == 1) {
+                    return i;
+                }
+            }
+        }
+    }
+
+    findBottomofPiece() {
+        var piece = this.currentPiece[this.currentRotation];
+        for (let i = this.topofPiece; i <= piece.length - 1; i++) {
+            if ((piece[i][0] == 0 && piece[i][1] == 0) && (piece[i][2] == 0 && piece[i][3] == 0)) {
+                return (i-1)
+            }
+        }
+        return 3;
     }
 }
 
