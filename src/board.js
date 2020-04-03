@@ -209,6 +209,7 @@ class Board {
         this.currentLevel = 1;
         this.currentSpeed = 1000;
         this.placeCurrentPiece();
+        document.addEventListener("keydown", self.handleEvent.bind(self));
         this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
@@ -356,6 +357,16 @@ class Board {
                     cols[i*10 + (j-4)].innerHTML = board[i][j]
                 }
             }
+        }
+    }
+
+    handleEvent(e) {
+        if (e.code == "ArrowRight") {
+            this.moveRight();
+        } else if (e.code == "ArrowLeft") {
+            this.moveLeft();
+        } else if (e.code == "ArrowUp") {
+            this.rotatePiece();
         }
     }
 }
