@@ -276,7 +276,7 @@ class Board {
         }
     }
 
-    placeCurrentPiece() {
+    placeCurrentPiece(end=false) {
         this.bottomY = this.checkBottomMove();
         var currentPiece = this.currentPiece[this.currentRotation]
         for (let i = 0; i <= currentPiece.length - 1; i++) {
@@ -286,6 +286,7 @@ class Board {
                 }
             }
         }
+        if (end == true) {this.clearLines()}
         this.populateBoard();
         this.drawGhostPiece();
     }
@@ -321,7 +322,7 @@ class Board {
         this.nextPieceNumber = this.boardQueue.top()[1];
         this.topofPiece = this.findTopofPiece();
         this.bottomofPiece = this.findBottomofPiece();
-        this.placeCurrentPiece();
+        this.placeCurrentPiece(true);
     }
     
     checkNextMove(move, piece=this.currentPiece[this.currentRotation]) {
@@ -425,8 +426,33 @@ class Board {
         }
     }
 
-    checkClears() {
+    lineClearIndices() {
+        const lines = [];
+        var isCleared = false;
+        for (let i = 0; i <= this.board.length - 1 - 4; i++) {
+            for (let j = 4; j <= this.board[i].length - 1 - 4; j++) {
+                if (this.board[i][j][0] == 0) {
+                    isCleared = false;
+                    break;
+                }
+                isCleared = true;
+            }
+            if (isCleared) {
+                lines.push(i);
+            }
+        }
+        return lines;
+    }
 
+    clearLines() {
+        const linesToClear = this.lineClearIndices();
+        var newLine = [];
+        for (let j = 0; j <= this.board.length - 1 - 4; j++) {
+            newLine.push([0, "White"]);
+        }
+        for (let k = 0; k <= linesToClear.length - 1; k++) {
+            this.board[linesToClear[k]] = newLine;
+        }
     }
 
     drawQueue() {
