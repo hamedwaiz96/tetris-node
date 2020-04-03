@@ -1,5 +1,6 @@
 .tetris-board {
     box-sizing: border-box;
+    border-left: 1px solid black;
 }
 
 .tetris-row {
@@ -20,4 +21,14 @@
 
 .tetris-row:last-of-type > .tetris-col {
     border-bottom: 1px solid black;
+}
+
+.board-score {
+    display: flex;
+    justify-content: space-around;
+}
+
+.next-list {
+    height: 250px;
+    width: 200px;
 }

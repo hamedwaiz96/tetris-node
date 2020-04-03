@@ -1,5 +1,4 @@
 const Queue = require('./queue');
-const _ = require('lodash');
 
 const PIECES = {
     "Line": {
@@ -224,8 +223,11 @@ class Board {
         this.bottomY = 18;
         this.topofPiece = this.findTopofPiece();
         this.bottomofPiece = this.findBottomofPiece();
+        this.score = 0;
+        this.levelGoal = this.currentLevel*5;
         this.placeCurrentPiece();
         document.addEventListener("keydown", self.handleEvent.bind(self));
+        document.getElementsByClassName('score')[0].innerHTML = this.score;
         this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
@@ -314,6 +316,7 @@ class Board {
         this.boardQueue.dequeue();
         var lastPieceNumber = this.randomPiece();
         this.boardQueue.enqueue([PIECES[PIECES_MAP[lastPieceNumber]], lastPieceNumber]);
+        this.drawQueue();
         this.nextPiece = this.boardQueue.top()[0];
         this.nextPieceNumber = this.boardQueue.top()[1];
         this.topofPiece = this.findTopofPiece();
@@ -354,9 +357,12 @@ class Board {
 
     createQueue() {
         const queue = new Queue();
+        var queueDOM = document.getElementsByClassName('next-img');
         for (let i = 0; i <= 3; i++){
             var pieceNumber = this.randomPiece();
+            var imageSrc = "/public/images/" + PIECES_MAP[pieceNumber] + ".png";
             queue.enqueue([PIECES[PIECES_MAP[pieceNumber]], pieceNumber])
+            queueDOM[3-i].src = imageSrc;
         }
         return queue;
     }
@@ -386,6 +392,7 @@ class Board {
         clearInterval(self.interval);
         this.currentLevel += 1
         this.currentSpeed = ((0.8 - ((this.currentLevel - 1) * 0.007))**(this.currentLevel - 1)) * 1000
+        this.levelGoal = this.currentLevel*5;
         window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
@@ -422,6 +429,15 @@ class Board {
 
     }
 
+    drawQueue() {
+        const queueDOM = document.getElementsByClassName('next-img');
+        for (let i = 0; i <= this.boardQueue.length - 1; i++) {
+            console.log(this.boardQueue.queue[i][1])
+            var imageSrc = "/public/images/" + PIECES_MAP[this.boardQueue.queue[i][1]] + ".png";
+            queueDOM[3-i].src = imageSrc;
+        }
+    }
+
     handleEvent(e) {
         console.log(e.code)
         if (e.code == "ArrowRight") {
@@ -430,6 +446,8 @@ class Board {
             this.moveLeft();
         } else if (e.code == "ArrowUp") {
             this.rotatePiece();
+        } else if (e.code == "ArrowDown") {
+            this.moveDown();
         } else if (e.code == "Space") {
             this.hardDropPiece();
         }

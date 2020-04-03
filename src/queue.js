@@ -1,10 +1,12 @@
 class Queue {
     constructor() {
         this.queue = []
+        this.length = 0;
     }
 
     enqueue(item) {
         this.queue.push(item)
+        this.length += 1
     }
 
     dequeue() {
@@ -12,6 +14,7 @@ class Queue {
             return false;
         }
         this.queue.shift();
+        this.length -= 1;
     }
 
     top() {
