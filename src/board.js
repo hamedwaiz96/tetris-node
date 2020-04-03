@@ -199,6 +199,7 @@ const PIECES_MAP = {
 class Board {
     constructor() {
         const self = this;
+        this.fails = 0;
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
         this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
@@ -230,13 +231,17 @@ class Board {
     }
 
     moveDown() {
-        this.removeCurrentPiece();
-        if (this.checkNextMove([0, 1])) {
-            this.currentY += 1;
-            this.placeCurrentPiece();
+        if (this.fails >= 1) {
+            this.gameOver();
         } else {
-            this.placeCurrentPiece();
-            this.resetToNextPiece();
+            this.removeCurrentPiece();
+            if (this.checkNextMove([0, 1])) {
+                this.currentY += 1;
+                this.placeCurrentPiece();
+            } else {
+                this.placeCurrentPiece();
+                this.resetToNextPiece();
+            }
         }
     }
 
@@ -279,6 +284,11 @@ class Board {
     }
 
     resetToNextPiece() {
+        if (this.currentY == 0) {
+            this.fails += 1;
+        } else {
+            this.fails = 0;
+        }
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
@@ -368,6 +378,11 @@ class Board {
         } else if (e.code == "ArrowUp") {
             this.rotatePiece();
         }
+    }
+
+    gameOver() {
+        clearInterval(this.interval);
+        alert("Game Over!");
     }
 }
 
