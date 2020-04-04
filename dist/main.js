@@ -27952,6 +27952,7 @@ var Board = /*#__PURE__*/function () {
     this.placeCurrentPiece();
     document.addEventListener("keydown", self.handleEvent.bind(self));
     document.getElementsByClassName('score')[0].innerHTML = this.score;
+    document.getElementsByClassName('level')[0].innerHTML = this.currentLevel;
     document.getElementsByClassName('reset-button')[0].addEventListener("click", this.reset.bind(self));
     this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
   }
@@ -28178,6 +28179,7 @@ var Board = /*#__PURE__*/function () {
       this.currentLevel += 1;
       this.currentSpeed = Math.pow(0.8 - (this.currentLevel - 1) * 0.007, this.currentLevel - 1) * 1000;
       this.levelGoal = this.currentLevel * 5;
+      this.drawLevel();
       this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
   }, {
@@ -28321,6 +28323,12 @@ var Board = /*#__PURE__*/function () {
       scoreDOM[0].innerHTML = this.score;
     }
   }, {
+    key: "drawLevel",
+    value: function drawLevel() {
+      var levelDOM = document.getElementsByClassName('level');
+      levelDOM[0].innerHTML = this.currentLevel;
+    }
+  }, {
     key: "handleEvent",
     value: function handleEvent(e) {
       if (e.code == "ArrowRight") {
@@ -28413,7 +28421,8 @@ var Board = /*#__PURE__*/function () {
     }
   }, {
     key: "reset",
-    value: function reset() {
+    value: function reset(e) {
+      e.preventDefault();
       var self = this;
       clearInterval(this.interval);
       this.fails = 0;
@@ -28436,6 +28445,9 @@ var Board = /*#__PURE__*/function () {
       this.savedPieceNumber = 0;
       this.savedTimes = 0;
       this.placeCurrentPiece();
+      document.getElementsByClassName('save-img')[0].src = "";
+      document.getElementsByClassName('score')[0].innerHTML = 0;
+      document.getElementsByClassName('level')[0].innerHTML = 1;
       this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
   }]);
