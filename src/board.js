@@ -457,6 +457,8 @@ class Board {
             var newerLine = _.cloneDeep(newLine)
             this.board[linesToClear[k]] = newerLine;
         }
+        if (linesToClear == 1) {this.score += 1} else if (linesToClear == 2) {this.score += 3} else if (linesToClear == 3) {this.score += 5} else if (linesToClear == 4) {this.score += 8};
+        this.drawScore();
     }
 
     fillEmptyLineSpace(linesToClear) {
@@ -489,6 +491,11 @@ class Board {
         console.log(this.savedPieceNumber)
         var imageSrc = "/public/images/" + PIECES_MAP[this.savedPieceNumber] + ".png";
         saveDOM[0].src = imageSrc;
+    }
+
+    drawScore() {
+        const scoreDOM = document.getElementsByClassName('score');
+        scoreDOM.innerHTML = this.score;
     }
 
     handleEvent(e) {
