@@ -28161,6 +28161,15 @@ var Board = /*#__PURE__*/function () {
       return BOARD;
     }
   }, {
+    key: "checkNextLevel",
+    value: function checkNextLevel() {
+      if (this.score >= this.levelGoal) {
+        return true;
+      }
+
+      return false;
+    }
+  }, {
     key: "nextLevel",
     value: function nextLevel() {
       var self = this;
@@ -28246,18 +28255,25 @@ var Board = /*#__PURE__*/function () {
         this.board[linesToClear[k]] = newerLine;
       }
 
-      if (linesToClear == 1) {
+      if (linesToClear.length == 1) {
         this.score += 1;
-      } else if (linesToClear == 2) {
+      } else if (linesToClear.length == 2) {
         this.score += 3;
-      } else if (linesToClear == 3) {
+      } else if (linesToClear.length == 3) {
         this.score += 5;
-      } else if (linesToClear == 4) {
+      } else if (linesToClear.length == 4) {
         this.score += 8;
       }
 
       ;
       this.drawScore();
+      console.log(this.score);
+
+      if (this.checkNextLevel()) {
+        this.nextLevel();
+      }
+
+      ;
     }
   }, {
     key: "fillEmptyLineSpace",
@@ -28303,25 +28319,31 @@ var Board = /*#__PURE__*/function () {
     key: "drawScore",
     value: function drawScore() {
       var scoreDOM = document.getElementsByClassName('score');
-      scoreDOM.innerHTML = this.score;
+      scoreDOM[0].innerHTML = this.score;
     }
   }, {
     key: "handleEvent",
     value: function handleEvent(e) {
-      e.preventDefault();
       console.log(e.code);
 
       if (e.code == "ArrowRight") {
+        e.preventDefault();
         this.moveRight();
       } else if (e.code == "ArrowLeft") {
+        e.preventDefault();
         this.moveLeft();
       } else if (e.code == "ArrowUp") {
+        e.preventDefault();
         this.rotatePiece();
       } else if (e.code == "ArrowDown") {
+        e.preventDefault();
         this.moveDown();
       } else if (e.code == "Space") {
+        e.preventDefault();
         this.hardDropPiece();
       } else if (e.code == "Tab") {
+        e.preventDefault();
+
         if (this.savedTimes == 0) {
           this.savePiece();
           this.drawSave();

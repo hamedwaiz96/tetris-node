@@ -393,6 +393,13 @@ class Board {
         return BOARD;
     }
 
+    checkNextLevel() {
+        if (this.score >= this.levelGoal) {
+            return true;
+        }
+        return false
+    }
+
     nextLevel() {
         const self = this;
         clearInterval(self.interval);
@@ -457,8 +464,10 @@ class Board {
             var newerLine = _.cloneDeep(newLine)
             this.board[linesToClear[k]] = newerLine;
         }
-        if (linesToClear == 1) {this.score += 1} else if (linesToClear == 2) {this.score += 3} else if (linesToClear == 3) {this.score += 5} else if (linesToClear == 4) {this.score += 8};
+        if (linesToClear.length == 1) {this.score += 1} else if (linesToClear.length == 2) {this.score += 3} else if (linesToClear.length == 3) {this.score += 5} else if (linesToClear.length == 4) {this.score += 8};
         this.drawScore();
+        console.log(this.score)
+        if (this.checkNextLevel()) {this.nextLevel()};
     }
 
     fillEmptyLineSpace(linesToClear) {
@@ -495,23 +504,28 @@ class Board {
 
     drawScore() {
         const scoreDOM = document.getElementsByClassName('score');
-        scoreDOM.innerHTML = this.score;
+        scoreDOM[0].innerHTML = this.score;
     }
 
     handleEvent(e) {
-        e.preventDefault();
         console.log(e.code)
         if (e.code == "ArrowRight") {
+            e.preventDefault();
             this.moveRight();
         } else if (e.code == "ArrowLeft") {
+            e.preventDefault();
             this.moveLeft();
         } else if (e.code == "ArrowUp") {
+            e.preventDefault();
             this.rotatePiece();
         } else if (e.code == "ArrowDown") {
+            e.preventDefault();
             this.moveDown();
         } else if (e.code == "Space") {
+            e.preventDefault();
             this.hardDropPiece();
         } else if (e.code == "Tab") {
+            e.preventDefault();
             if (this.savedTimes == 0) {
                 this.savePiece();
                 this.drawSave();
