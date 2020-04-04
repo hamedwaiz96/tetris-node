@@ -1,6 +1,16 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 h1 {
     text-align: center;
     margin: auto;
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+    text-align: center;
 }
 
 .tetris-board {
@@ -36,4 +46,30 @@ h1 {
 .next-list {
     height: 250px;
     width: 200px;
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
+}
+
+.score-next {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    height: 500px;
+    width: 200px;
+}
+
+.saved-div {
+    margin: auto;
+    padding-top: 30%;
+    box-sizing: border-box;
+}
+
+.score-div {
+    margin: auto;
+    width: 200px;
+    height: 100px;
+    padding-top: 20%;
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
 }
