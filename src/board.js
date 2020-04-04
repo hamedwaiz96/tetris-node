@@ -406,7 +406,7 @@ class Board {
         this.currentLevel += 1
         this.currentSpeed = ((0.8 - ((this.currentLevel - 1) * 0.007))**(this.currentLevel - 1)) * 1000
         this.levelGoal = this.currentLevel*5;
-        window.setInterval(this.moveDown.bind(self), this.currentSpeed);
+        this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
     populateBoard(board=this.board) {
@@ -560,6 +560,7 @@ class Board {
     gameOver() {
         clearInterval(this.interval);
         alert("Game Over!");
+        return;
     }
 
     findTopofPiece() {

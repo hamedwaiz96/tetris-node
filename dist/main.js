@@ -28177,7 +28177,7 @@ var Board = /*#__PURE__*/function () {
       this.currentLevel += 1;
       this.currentSpeed = Math.pow(0.8 - (this.currentLevel - 1) * 0.007, this.currentLevel - 1) * 1000;
       this.levelGoal = this.currentLevel * 5;
-      window.setInterval(this.moveDown.bind(self), this.currentSpeed);
+      this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
   }, {
     key: "populateBoard",
@@ -28386,6 +28386,7 @@ var Board = /*#__PURE__*/function () {
     value: function gameOver() {
       clearInterval(this.interval);
       alert("Game Over!");
+      return;
     }
   }, {
     key: "findTopofPiece",
