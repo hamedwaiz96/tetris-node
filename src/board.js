@@ -1,187 +1,188 @@
 const Queue = require('./queue');
+const _ = require('lodash');
 
 const PIECES = {
     "Line": {
         0: [
-            [0, 0, 0, 0], 
-            [1, 1, 1, 1], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"], 
+            ["#30D1F1", "#30D1F1", "#30D1F1", "#30D1F1"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 0, 1, 0],
-            [0, 0, 1, 0],
-            [0, 0, 1, 0],
-            [0, 0, 1, 0]
+            ["White", "White", "#30D1F1", "White"],
+            ["White", "White", "#30D1F1", "White"],
+            ["White", "White", "#30D1F1", "White"],
+            ["White", "White", "#30D1F1", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [1, 1, 1, 1],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["White", "White", "White", "White"],
+            ["#30D1F1", "#30D1F1", "#30D1F1", "#30D1F1"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 1, 0, 0]
+            ["White", "#30D1F1", "White", "White"],
+            ["White", "#30D1F1", "White", "White"],
+            ["White", "#30D1F1", "White", "White"],
+            ["White", "#30D1F1", "White", "White"]
         ]
     },
     "Square": {
         0: [
-            [0, 1, 1, 0], 
-            [0, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 1, 1, 0], 
-            [0, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 1, 1, 0], 
-            [0, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [0, 1, 1, 0], 
-            [0, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "#F1D70A", "#F1D70A", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ]
     },
     "T": {
         0: [
-            [0, 1, 0, 0], 
-            [1, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#AF00E9", "White", "White"], 
+            ["#AF00E9", "#AF00E9", "#AF00E9", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 1, 0, 0],
-            [0, 1, 1, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "#AF00E9", "White", "White"],
+            ["White", "#AF00E9", "#AF00E9", "White"],
+            ["White", "#AF00E9", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [1, 1, 1, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["#AF00E9", "#AF00E9", "#AF00E9", "White"],
+            ["White", "#AF00E9", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [0, 1, 0, 0],
-            [1, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "#AF00E9", "White", "White"],
+            ["#AF00E9", "#AF00E9", "White", "White"],
+            ["White", "#AF00E9", "White", "White"],
+            ["White", "White", "White", "White"]
         ]
     },
     "RL": {
         0: [
-            [0, 0, 1, 0], 
-            [1, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "White", "#F38F0E", "White"], 
+            ["#F38F0E", "#F38F0E", "#F38F0E", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 1, 1, 0],
-            [0, 0, 0, 0]
+            ["White", "#F38F0E", "White", "White"],
+            ["White", "#F38F0E", "White", "White"],
+            ["White", "#F38F0E", "#F38F0E", "White"],
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [1, 1, 1, 0],
-            [1, 0, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["#F38F0E", "#F38F0E", "#F38F0E", "White"],
+            ["#F38F0E", "White", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [1, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["#F38F0E", "#F38F0E", "White", "White"],
+            ["White", "#F38F0E", "White", "White"],
+            ["White", "#F38F0E", "White", "White"],
+            ["White", "White", "White", "White"]
         ]
     },
     "LL": {
         0: [
-            [1, 0, 0, 0], 
-            [1, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["#1459E9", "White", "White", "White"], 
+            ["#1459E9", "#1459E9", "#1459E9", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 1, 1, 0],
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "#1459E9", "#1459E9", "White"],
+            ["White", "#1459E9", "White", "White"],
+            ["White", "#1459E9", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [1, 1, 1, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["#1459E9", "#1459E9", "#1459E9", "White"],
+            ["White", "White", "#1459E9", "White"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [0, 1, 0, 0],
-            [0, 1, 0, 0],
-            [1, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "#1459E9", "White", "White"],
+            ["White", "#1459E9", "White", "White"],
+            ["#1459E9", "#1459E9", "White", "White"],
+            ["White", "White", "White", "White"]
         ]
     },
     "RZ": {
         0: [
-            [1, 1, 0, 0], 
-            [0, 1, 1, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["#E9000A", "#E9000A", "White", "White"], 
+            ["White", "#E9000A", "#E9000A", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 0, 1, 0],
-            [0, 1, 1, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "#E9000A", "White"],
+            ["White", "#E9000A", "#E9000A", "White"],
+            ["White", "#E9000A", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [1, 1, 0, 0],
-            [0, 1, 1, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["#E9000A", "#E9000A", "White", "White"],
+            ["White", "#E9000A", "#E9000A", "White"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [0, 1, 0, 0],
-            [1, 1, 0, 0],
-            [1, 0, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "#E9000A", "White", "White"],
+            ["#E9000A", "#E9000A", "White", "White"],
+            ["#E9000A", "White", "White", "White"],
+            ["White", "White", "White", "White"]
         ]
     },
     "LZ": {
         0: [
-            [0, 1, 1, 0], 
-            [1, 1, 0, 0], 
-            [0, 0, 0, 0], 
-            [0, 0, 0, 0]
+            ["White", "#3DFF2D", "#3DFF2D", "White"], 
+            ["#3DFF2D", "#3DFF2D", "White", "White"], 
+            ["White", "White", "White", "White"], 
+            ["White", "White", "White", "White"]
         ],
         1: [
-            [0, 1, 0, 0],
-            [0, 1, 1, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 0]
+            ["White", "#3DFF2D", "White", "White"],
+            ["White", "#3DFF2D", "#3DFF2D", "White"],
+            ["White", "White", "#3DFF2D", "White"],
+            ["White", "White", "White", "White"]
         ],
         2: [
-            [0, 0, 0, 0],
-            [0, 1, 1, 0],
-            [1, 1, 0, 0],
-            [0, 0, 0, 0]
+            ["White", "White", "White", "White"],
+            ["White", "#3DFF2D", "#3DFF2D", "White"],
+            ["#3DFF2D", "#3DFF2D", "White", "White"],
+            ["White", "White", "White", "White"]
         ],
         3: [
-            [1, 0, 0, 0],
-            [1, 1, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 0, 0]
-        ]
+            ["#3DFF2D", "White", "White", "White"],
+            ["#3DFF2D", "#3DFF2D", "White", "White"],
+            ["White", "#3DFF2D", "White", "White"],
+            ["White", "White", "White", "White"]
+     ]
     }
 }
 
@@ -211,10 +212,8 @@ class Board {
         this.fails = 0;
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentPieceNumber = this.randomPiece();
-        this.currentPiece = PIECES[PIECES_MAP[this.currentPieceNumber]];
-        this.nextPiece = this.boardQueue.top()[0]
-        this.nextPieceNumber = this.boardQueue.top()[1];
+        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
+        this.nextPiece = this.boardQueue.top()[0];
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
@@ -276,26 +275,24 @@ class Board {
         }
     }
 
-    placeCurrentPiece(end=false) {
-        this.bottomY = this.checkBottomMove();
-        var currentPiece = this.currentPiece[this.currentRotation]
-        for (let i = 0; i <= currentPiece.length - 1; i++) {
-            for (let j = 0; j <= currentPiece[i].length - 1; j++) {
-                if (currentPiece[i][j] == 1){
-                    this.board[this.currentY + i][this.currentX + j] = [currentPiece[i][j], COLOR_MAP[this.currentPieceNumber]]
+    placeCurrentPiece(piece=this.currentPiece[this.currentRotation]) {
+        this.bottomY = this.checkBottomMove(piece);
+        for (let i = 0; i <= piece.length - 1; i++) {
+            for (let j = 0; j <= piece[i].length - 1; j++) {
+                if (piece[i][j] != "White"){
+                    this.board[this.currentY + i][this.currentX + j] = piece[i][j];
                 }
             }
         }
         this.populateBoard();
-        this.drawGhostPiece();
+        this.drawGhostPiece(piece);
     }
 
-    removeCurrentPiece() {
-        var currentPiece = this.currentPiece[this.currentRotation]
-        for (let i = 0; i <= currentPiece.length - 1; i++) {
-            for (let j = 0; j <= currentPiece[i].length - 1; j++) {
-                if (currentPiece[i][j] == 1) {
-                    this.board[this.currentY + i][this.currentX + j] = [0, "White"];
+    removeCurrentPiece(piece=this.currentPiece[this.currentRotation]) {
+        for (let i = 0; i <= piece.length - 1; i++) {
+            for (let j = 0; j <= piece[i].length - 1; j++) {
+                if (piece[i][j] != "White") {
+                    this.board[this.currentY + i][this.currentX + j] = "White";
                 }
             }
         }
@@ -308,21 +305,23 @@ class Board {
         } else {
             this.fails = 0;
         }
-        this.clearLines()
+        const linesToClear = this.lineClearIndices();
+        if (linesToClear.length >= 1) {
+            this.clearLines(linesToClear)
+            this.fillEmptyLineSpace(linesToClear)
+        }
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
         this.currentPiece = this.nextPiece;
-        this.currentPieceNumber = this.nextPieceNumber;
         this.boardQueue.dequeue();
-        var lastPieceNumber = this.randomPiece();
-        this.boardQueue.enqueue([PIECES[PIECES_MAP[lastPieceNumber]], lastPieceNumber]);
+        const newPieceNumber = this.randomPiece();
+        this.boardQueue.enqueue([PIECES[PIECES_MAP[newPieceNumber]], newPieceNumber]);
         this.drawQueue();
         this.nextPiece = this.boardQueue.top()[0];
-        this.nextPieceNumber = this.boardQueue.top()[1];
         this.topofPiece = this.findTopofPiece();
         this.bottomofPiece = this.findBottomofPiece();
-        this.placeCurrentPiece(true);
+        this.placeCurrentPiece();
     }
     
     checkNextMove(move, piece=this.currentPiece[this.currentRotation]) {
@@ -334,7 +333,7 @@ class Board {
         var nextY = (this.currentY + move[1]);
         for (let i = 0; i <= piece.length - 1; i++) {
             for (let j = 0; j <= piece[i].length - 1; j++) {
-                if (piece[i][j] == 1 && this.board[nextY + i][nextX + j][0] == 1) {
+                if (piece[i][j] != "White" && this.board[nextY + i][nextX + j] != "White") {
                     return false;
                 }
             }
@@ -342,9 +341,9 @@ class Board {
         return true;
     }
 
-    checkBottomMove() {
+    checkBottomMove(piece=this.currentPiece[this.currentRotation]) {
         for (let i = 1; i <= 20; i++) {
-            if (this.checkNextMove([0, i])) {
+            if (this.checkNextMove([0, i], piece)) {
                 continue
             } else {
                 return (i-1)+this.currentY;
@@ -379,9 +378,9 @@ class Board {
         for (let j = 0; j <= BOARD.length - 1; j++) {
             for (let k = 0; k <= BOARD[0].length - 1; k++) {
                 if (j >= 20 || (k <= 3 || k >= 14)) {
-                    BOARD[j][k] = [1, "White"];
+                    BOARD[j][k] = "Black";
                 } else {
-                    BOARD[j][k] = [0, "White"];
+                    BOARD[j][k] = "White";
                 }
             }
         }
@@ -405,21 +404,20 @@ class Board {
                     continue;
                 } else {
                     var currentIndex = (i*10) + (j-4)
-                    cols[currentIndex].style.backgroundColor = board[i][j][1];
+                    cols[currentIndex].style.backgroundColor = board[i][j];
                     cols[currentIndex].style.opacity = "1";
                 }
             }
         }
     }
 
-    drawGhostPiece() {
+    drawGhostPiece(piece=this.currentPiece[this.currentRotation]) {
         var cols = document.getElementsByClassName('tetris-col-p');
-        var piece = this.currentPiece[this.currentRotation];
         for (let i = 0; i <= piece.length - 1; i++) {
             for (let j = 0; j <= piece[i].length - 1; j++) {
-                if (piece[i][j] == 1) {
+                if (piece[i][j] != "White") {
                     var bottomIndex = (this.bottomY+i)*10 + (this.currentX+j - 4);
-                    cols[bottomIndex].style.backgroundColor = COLOR_MAP[this.currentPieceNumber];
+                    cols[bottomIndex].style.backgroundColor = piece[i][j];
                     cols[bottomIndex].style.opacity = "0.6";
                 }
             }
@@ -431,7 +429,7 @@ class Board {
         var isCleared = false;
         for (let i = 0; i <= this.board.length - 1 - 4; i++) {
             for (let j = 4; j <= this.board[i].length - 1 - 4; j++) {
-                if (this.board[i][j][0] == 0) {
+                if (this.board[i][j] == "White") {
                     isCleared = false;
                     break;
                 }
@@ -444,21 +442,37 @@ class Board {
         return lines;
     }
 
-    clearLines() {
-        const linesToClear = this.lineClearIndices();
+    clearLines(linesToClear) {
         var newLine = [];
-        for (let j = 0; j <= this.board.length - 1 - 4; j++) {
-            newLine.push([0, "White"]);
+        for (let j = 0; j <= this.board[linesToClear[0]].length - 1; j++) {
+            if (j <=3 || j >= 14) {newLine.push("Black")} else {newLine.push("White");}
         }
         for (let k = 0; k <= linesToClear.length - 1; k++) {
-            this.board[linesToClear[k]] = newLine;
+            var newerLine = _.cloneDeep(newLine)
+            this.board[linesToClear[k]] = newerLine;
         }
+    }
+
+    fillEmptyLineSpace(linesToClear) {
+        var newPiece = []
+        for (let i = 0; i <= linesToClear[0] - 1; i++) {
+            var rowPiece = [];
+            for (let j = 4; j <= this.board[i].length - 1 - 4; j++) {
+                rowPiece.push(this.board[i][j])
+            }
+            newPiece.push(rowPiece);
+        }
+        this.bottomY = linesToClear.length;
+        this.currentX = 4;
+        this.currentY = 0;
+        this.removeCurrentPiece(newPiece);
+        this.currentY = this.bottomY;
+        this.placeCurrentPiece(newPiece);
     }
 
     drawQueue() {
         const queueDOM = document.getElementsByClassName('next-img');
         for (let i = 0; i <= this.boardQueue.length - 1; i++) {
-            console.log(this.boardQueue.queue[i][1])
             var imageSrc = "/public/images/" + PIECES_MAP[this.boardQueue.queue[i][1]] + ".png";
             queueDOM[3-i].src = imageSrc;
         }
@@ -479,10 +493,10 @@ class Board {
         }
     }
 
-    hardDropPiece() {
-        this.removeCurrentPiece();
+    hardDropPiece(piece=this.currentPiece[this.currentRotation]) {
+        this.removeCurrentPiece(piece);
         this.currentY = this.bottomY;
-        this.placeCurrentPiece();
+        this.placeCurrentPiece(piece);
         this.resetToNextPiece();
     }
 
@@ -495,7 +509,7 @@ class Board {
         var piece = this.currentPiece[this.currentRotation]
         for (let i = 0; i <= piece.length - 1; i++) {
             for (let j = 0; j <= piece[i].length - 1; j++) {
-                if (piece[i][j] == 1) {
+                if (piece[i][j] != "White") {
                     return i;
                 }
             }
@@ -505,7 +519,7 @@ class Board {
     findBottomofPiece() {
         var piece = this.currentPiece[this.currentRotation];
         for (let i = this.topofPiece; i <= piece.length - 1; i++) {
-            if ((piece[i][0] == 0 && piece[i][1] == 0) && (piece[i][2] == 0 && piece[i][3] == 0)) {
+            if ((piece[i][0] == "White" && piece[i][1] == "White") && (piece[i][2] == "White" && piece[i][3] == "White")) {
                 return (i-1)
             }
         }
