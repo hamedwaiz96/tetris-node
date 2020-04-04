@@ -466,7 +466,6 @@ class Board {
         }
         if (linesToClear.length == 1) {this.score += 1} else if (linesToClear.length == 2) {this.score += 3} else if (linesToClear.length == 3) {this.score += 5} else if (linesToClear.length == 4) {this.score += 8};
         this.drawScore();
-        console.log(this.score)
         if (this.checkNextLevel()) {this.nextLevel()};
     }
 
@@ -497,7 +496,6 @@ class Board {
 
     drawSave() {
         const saveDOM = document.getElementsByClassName('save-img');
-        console.log(this.savedPieceNumber)
         var imageSrc = "/public/images/" + PIECES_MAP[this.savedPieceNumber] + ".png";
         saveDOM[0].src = imageSrc;
     }
@@ -508,7 +506,6 @@ class Board {
     }
 
     handleEvent(e) {
-        console.log(e.code)
         if (e.code == "ArrowRight") {
             e.preventDefault();
             this.moveRight();

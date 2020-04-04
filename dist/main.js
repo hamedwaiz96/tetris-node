@@ -28267,7 +28267,6 @@ var Board = /*#__PURE__*/function () {
 
       ;
       this.drawScore();
-      console.log(this.score);
 
       if (this.checkNextLevel()) {
         this.nextLevel();
@@ -28311,7 +28310,6 @@ var Board = /*#__PURE__*/function () {
     key: "drawSave",
     value: function drawSave() {
       var saveDOM = document.getElementsByClassName('save-img');
-      console.log(this.savedPieceNumber);
       var imageSrc = "/public/images/" + PIECES_MAP[this.savedPieceNumber] + ".png";
       saveDOM[0].src = imageSrc;
     }
@@ -28324,8 +28322,6 @@ var Board = /*#__PURE__*/function () {
   }, {
     key: "handleEvent",
     value: function handleEvent(e) {
-      console.log(e.code);
-
       if (e.code == "ArrowRight") {
         e.preventDefault();
         this.moveRight();
