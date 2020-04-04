@@ -212,7 +212,8 @@ class Board {
         this.fails = 0;
         this.board = this.createBoard();
         this.boardQueue = this.createQueue();
-        this.currentPiece = PIECES[PIECES_MAP[this.randomPiece()]];
+        this.currentPieceNumber = this.randomPiece();
+        this.currentPiece = PIECES[PIECES_MAP[this.currentPieceNumber]];
         this.nextPiece = this.boardQueue.top()[0];
         this.currentX = 7;
         this.currentY = 0;
@@ -224,6 +225,9 @@ class Board {
         this.bottomofPiece = this.findBottomofPiece();
         this.score = 0;
         this.levelGoal = this.currentLevel*5;
+        this.savedPiece = 0;
+        this.savedPieceNumber = 0;
+        this.savedTimes = 0;
         this.placeCurrentPiece();
         document.addEventListener("keydown", self.handleEvent.bind(self));
         document.getElementsByClassName('score')[0].innerHTML = this.score;
@@ -299,7 +303,7 @@ class Board {
         this.populateBoard();
     }
 
-    resetToNextPiece() {
+    resetToNextPiece(movePieces=false) {
         if (this.currentY == 0) {
             this.fails += 1;
         } else {
@@ -313,7 +317,9 @@ class Board {
         this.currentX = 7;
         this.currentY = 0;
         this.currentRotation = 0;
+        if (movePieces == false) {this.savedTimes = 0}
         this.currentPiece = this.nextPiece;
+        this.currentPieceNumber = this.boardQueue.top()[1];
         this.boardQueue.dequeue();
         const newPieceNumber = this.randomPiece();
         this.boardQueue.enqueue([PIECES[PIECES_MAP[newPieceNumber]], newPieceNumber]);
@@ -478,7 +484,15 @@ class Board {
         }
     }
 
+    drawSave() {
+        const saveDOM = document.getElementsByClassName('save-img');
+        console.log(this.savedPieceNumber)
+        var imageSrc = "/public/images/" + PIECES_MAP[this.savedPieceNumber] + ".png";
+        saveDOM[0].src = imageSrc;
+    }
+
     handleEvent(e) {
+        e.preventDefault();
         console.log(e.code)
         if (e.code == "ArrowRight") {
             this.moveRight();
@@ -490,6 +504,12 @@ class Board {
             this.moveDown();
         } else if (e.code == "Space") {
             this.hardDropPiece();
+        } else if (e.code == "Tab") {
+            if (this.savedTimes == 0) {
+                this.savePiece();
+                this.drawSave();
+                this.savedTimes += 1;
+            }
         }
     }
 
@@ -498,6 +518,22 @@ class Board {
         this.currentY = this.bottomY;
         this.placeCurrentPiece(piece);
         this.resetToNextPiece();
+    }
+
+    savePiece() {
+        if (this.savedPiece == 0) {
+            this.removeCurrentPiece();
+            this.savedPieceNumber = this.currentPieceNumber;
+            this.savedPiece = this.currentPiece;
+            this.resetToNextPiece(true);
+        } else {
+            this.removeCurrentPiece();
+            [this.savedPieceNumber, this.currentPieceNumber] = [this.currentPieceNumber, this.savedPieceNumber];
+            [this.savedPiece, this.currentPiece] = [this.currentPiece, this.savedPiece];
+            this.currentY = 0;
+            this.currentX = 7;
+            this.placeCurrentPiece();
+        }
     }
 
     gameOver() {
