@@ -473,7 +473,7 @@ class Board {
     drawQueue() {
         const queueDOM = document.getElementsByClassName('next-img');
         for (let i = 0; i <= this.boardQueue.length - 1; i++) {
-            var imageSrc = "/public/images/" + PIECES_MAP[this.boardQueue.queue[i][1]] + ".png";
+            var imageSrc = "/public/images/" + PIECES_MAP[this.boardQueue.queue[3-i][1]] + ".png";
             queueDOM[3-i].src = imageSrc;
         }
     }
