@@ -231,6 +231,7 @@ class Board {
         this.placeCurrentPiece();
         document.addEventListener("keydown", self.handleEvent.bind(self));
         document.getElementsByClassName('score')[0].innerHTML = this.score;
+        document.getElementsByClassName('reset-button')[0].addEventListener("click", this.reset.bind(self))
         this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 
@@ -579,6 +580,32 @@ class Board {
             }
         }
         return 3;
+    }
+
+    reset() {
+        const self = this;
+        clearInterval(this.interval)
+        this.fails = 0;
+        this.board = this.createBoard();
+        this.boardQueue = this.createQueue();
+        this.currentPieceNumber = this.randomPiece();
+        this.currentPiece = PIECES[PIECES_MAP[this.currentPieceNumber]];
+        this.nextPiece = this.boardQueue.top()[0];
+        this.currentX = 7;
+        this.currentY = 0;
+        this.currentRotation = 0;
+        this.currentLevel = 1;
+        this.currentSpeed = 1000;
+        this.bottomY = 18;
+        this.topofPiece = this.findTopofPiece();
+        this.bottomofPiece = this.findBottomofPiece();
+        this.score = 0;
+        this.levelGoal = this.currentLevel*5;
+        this.savedPiece = 0;
+        this.savedPieceNumber = 0;
+        this.savedTimes = 0;
+        this.placeCurrentPiece();
+        this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 }
 

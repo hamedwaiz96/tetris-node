@@ -73,3 +73,9 @@ h2 {
     box-sizing: border-box;
     border-bottom: 1px solid black;
 }
+
+.reset-button {
+    text-align: center;
+    margin-left: 25%;
+    margin-top: 2%;
+}
