@@ -27953,7 +27953,6 @@ var Board = /*#__PURE__*/function () {
     document.addEventListener("keydown", self.handleEvent.bind(self));
     document.getElementsByClassName('score')[0].innerHTML = this.score;
     document.getElementsByClassName('level')[0].innerHTML = this.currentLevel;
-    document.getElementsByClassName('reset-button')[0].addEventListener("click", this.reset.bind(self));
     this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
   }
 
@@ -28471,7 +28470,40 @@ var Board = __webpack_require__(/*! ./board */ "./src/board.js");
 var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
 $(function () {
-  var board = new Board();
+  var timer = $('.timer');
+  timer.toggleClass('invisible');
+  $('.single-player').click(function (e) {
+    var timer = $('.timer');
+    var menu = $('.menu');
+    menu.toggleClass('invisible');
+    timer.toggleClass('invisible');
+    timer.html('3');
+    setTimeout(function () {
+      timer.html('2');
+    }, 1000);
+    setTimeout(function () {
+      timer.html('1');
+    }, 2000);
+    setTimeout(function () {
+      e.preventDefault();
+      var menu_back = $('.menu-background');
+      menu_back.toggleClass('invisible');
+      window.board = new Board();
+      $('.reset-button').click(function (e) {
+        if (menu_back.hasClass('invisible')) {
+          menu_back.toggleClass('invisible');
+          menu.toggleClass('invisible');
+          timer.toggleClass('invisible');
+          e.preventDefault();
+          clearInterval(window.board.interval);
+          delete window.board;
+        }
+      });
+    }, 3000);
+  });
+  $('.multi-player').click(function (e) {
+    e.preventDefault();
+  });
 });
 
 /***/ }),

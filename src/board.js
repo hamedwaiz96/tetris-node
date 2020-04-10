@@ -232,7 +232,6 @@ class Board {
         document.addEventListener("keydown", self.handleEvent.bind(self));
         document.getElementsByClassName('score')[0].innerHTML = this.score;
         document.getElementsByClassName('level')[0].innerHTML = this.currentLevel;
-        document.getElementsByClassName('reset-button')[0].addEventListener("click", this.reset.bind(self))
         this.interval = window.setInterval(this.moveDown.bind(self), this.currentSpeed);
     }
 

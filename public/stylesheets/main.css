@@ -13,6 +13,40 @@ h2 {
     text-align: center;
 }
 
+.menu > h2 {
+    margin-bottom: 10px;
+}
+
+.menu-background {
+    position: absolute;
+    z-index: 4;
+    background-color: rgba(128, 128, 128, .9);
+    height: 100%;
+    width: 100%;
+}
+
+.menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -75px;
+    background-color: rgba(0, 102, 255, 1);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    height: 150px;
+    width: 300px;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+
+.game-mode > input {
+    width: 100%;
+    text-align: center;
+    margin-bottom:10px;
+}
+
 .tetris-board {
     box-sizing: border-box;
     border-left: 1px solid black;
@@ -42,6 +76,7 @@ h2 {
 .board-score {
     display: flex;
     justify-content: space-around;
+    position: relative;
 }
 
 .next-list {
@@ -89,4 +124,21 @@ h2 {
 
 .level-div {
     border-bottom: 1px solid black;
+}
+
+.timer {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    z-index: 10;
+    text-align: center;
+    font-size: 24px;
+}
+
+.invisible {
+    display: none;
 }
